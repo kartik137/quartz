@@ -1,6 +1,8 @@
 ---
-title: Welcome to Quartz
+title: ARPM Notes
 ---
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+# Linear Mean-Covariance Statistics
+[[Day 1/Linear Mean-Covariance Statistics|Linear Mean-Covariance Statistics]]
+
+[[Day 1/Linear Factor Models|Linear Factor Models]]
