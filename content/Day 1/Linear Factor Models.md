@@ -92,16 +92,34 @@ Honestly didn't really understand this section but probably useful for MI
 
 # Appendix: Spectral Decomposition
 
-Most undergrad lin alg classes...
-Link to Axler
-Double check with ChatGPT
+Unfortunately, many college linear algebra classes focus more on computation versus intuition. The following is an explanation of eigenvectors and eigenvalues which may not have been apparent in a computational-focused linear algebra course.
+
 ### Linear Transformations
 Matrices represent linear transformations between two (finite-dimensional) vector spaces: $f: V \rightarrow W$. However, linear transformations can be arbitrarily complicated, e.g. $(x,y,z) \mapsto (3x-24y+7z, -54x+27y+34z, 26x-92y-10z)$. Sure this is easy in 3-dimensions, but it becomes much more difficult to evaluate (and moreover reason about) in higher dimensions.
 
 ### Direct Sums
-Suppose $V_1, \dots , V_n$ are subspaces of $V$. Every element of $V$ can be written as $v_1 + \ldots v_n$ where $v_i \in V_i$. One special case is where each vector in $V$ can **uniquely** represented in the above form. We write $V_1 \bigoplus \ldots \bigoplus V_n$ if every vector can be written this way. Intuitively, this means each subspace is independent of each other: if $U$ and $W$ are subspaces of $V$ then $U + W$ is a direct sum if and only if $U \cap W = {0}$.
+Suppose $V_1, \dots , V_n$ are subspaces of $V$. Every element of $V$ can be written as $v_1 + \ldots v_n$ where $v_i \in V_i$. One special case is where each vector in $V$ can **uniquely** represented in the above form. We write $V_1 \bigoplus \ldots \bigoplus V_n$ if every vector can be written this way. Intuitively, this means each subspace is independent of all others: if $U$ and $W$ are subspaces of $V$ then $U + W$ is a direct sum if and only if $U \cap W = {0}$.
 
-#### Eigenspaces
-It would be great if a complicated linear transformation could be simplified. This is the case for diagonalizable transformation (which have a matrix which is diagonal under some basis). In this case, there is a change of basis for $V$ such that the linear transform can be represented as $(x,y,z) \mapsto (\lambda_1 e_1, \lambda_2 e_2, \lambda_3 e_3)$. We call $\lambda_i$ eigenvalues and $e_i$ eigenvectors. In other words, the transformation acts on each dimension independently.  The eigenspace of $V$ is simply a change of basis.
+### Bases
+We can represent a vector in a vector space using a basis $B$ of linearly-independent vectors. If $V$ is an n-dimensional vector space and $\mathcal{B} = (\vec{b}_1,\ldots, \vec{b}_n)$ is a set of linearly-independent vectors, we can represent any vector $\vec{v}$ as $\vec{v} = \sum_{i=1}^n a_i\cdot \vec{b}_i$. Equivalently, if $\mathcal{D} = (\vec{d}_1, \ldots, \vec{d}_n)$ is another set of linearly-independent vectors, we can represent $\vec{v}$ as $\vec{v} = \sum_{i=1}^n c_i\cdot \vec{d}_i$. A basis is simply a frame of reference for which we can quantitatively decompose a vector into a weighted sum of linearly-independent simple "basis" vectors.
 
-For vector spaces defined over $\mathbb{R}$ (which is what we care about in finance), a transformation is diagonalizable if and only if it is self-adjoint (i.e. $T$ is equal to its transpose). It's a bit more complicated if the space is defined over $\mathbb{C}$. 
+Given two bases $\mathcal{B}$ and $\mathcal{C}$, there will be a linear transformation $P$ which turns a vector space represented under $\mathcal{B}$ to the vector space represented under $\mathcal{C}$. This transformation is called the "change-of-basis" transformation. One can show that a transformation $P$ is a change-of-basis transformation if and only if $P$ is invertible (i.e. there is a transformation $Q$ such that $PQ=I$).
+
+### Eigenspaces
+It would be great if a complicated linear transformation could be simplified. This is the case for diagonalizable transformation (which have a matrix which is diagonal under some basis). In this case, there is a change of basis for $V$ such that the linear transform can be represented as $\sum_{i=1}^n v_i\vec{e}_i \mapsto \sum_{i=1}^n (\lambda_iv_i)\vec{e}_i$. We call $\lambda_i$ eigenvalues and $e_i$ eigenvectors. In other words, the transformation acts on each dimension (by expanding/contracting it) independently.
+
+
+Take a diagonal matrix 
+$$D = \begin{bmatrix}
+\lambda_1 & 0 & 0\\
+0 & \ddots & 0 \\
+0 & 0 & \lambda_n
+\end{bmatrix}
+$$
+Notice that on any vector $v = (v_1, v_2, v_3)$, $D$ acts on $v$ by simply scaling each component:
+$(v_1, v_2, v_3) \mapsto (\lambda_1v_1, \lambda_2v_2, \lambda_3v_3)$. This is effectively the simplest non-trivial linear transformation of a space you can have.
+
+Now note that a linear transformation may not be able to be represented as a diagonal matrix under one basis but may be diagonal under another basis. In particular, a linear transformation $T$ is called **diagonalizable** if there is some invertible matrix $P$ (i.e. a change-of-basis transformation from bases $\mathcal{B}$ to $\mathcal{C}$) such that $P^{-1}TP$ is diagonal. When $P^{-1}TP$ acts on a vector $\vec{v}$, it first converts the vector from basis $\mathcal{B}$ to basis $\mathcal{C}$ using $P$, applies the transformation $T$ under the basis $\mathcal{C}$, and then converts the resulting vector back from basis $\mathcal{C}$ to basis $\mathcal{B}$ using $P^{-1}$. 
+
+
+Thus, if a linear transformation is diagonalizable, there exists some basis under which the transformation acts on each dimension independently by contracting or expanding that dimension. In other words, there exists a change-of-basis transformation such that we can represent $V$ as a direct sum of 1-dimensional subspaces, $V=V_1\oplus \ldots \oplus V_n$, such that the transformation acts on each subspace independently.
